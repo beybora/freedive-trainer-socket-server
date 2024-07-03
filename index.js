@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 4000;
 
 app.use(express.json());
 
-app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
+app.use(cors({ origin: process.env.FRONTEND_URL }));
 
 io.on("connection", (socket) => {
   console.log(`Socket connected: ${socket.id}`);
@@ -26,7 +26,6 @@ io.on("connection", (socket) => {
     console.log(`Socket disconnected: ${socket.id}`);
   });
 });
-
 
 server.listen(PORT, () => {
   console.log(`Server is up on port ${PORT}`);
