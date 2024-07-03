@@ -6,13 +6,13 @@ const cors = require("cors");
 
 const app = express();
 const server = createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+  cors: {
+    origin: process.env.FRONTEND_URL,
+  },
+});
 
 const PORT = process.env.PORT || 4000;
-
-app.use(express.json());
-
-app.use(cors({ origin: process.env.FRONTEND_URL }));
 
 io.on("connection", (socket) => {
   console.log(`Socket connected: ${socket.id}`);
