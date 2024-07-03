@@ -1,15 +1,17 @@
+require("dotenv/config");
 const express = require("express");
-const { createServer } = require("http");
-const serverless = require("serverless-http");
+const { createServer } = require("node:http");
 const { Server } = require("socket.io");
 
 const app = express();
 const server = createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: "*",
-  },
-});
+const io = new Server(server);
+
+const PORT = process.env.PORT || 4000;
+
+app.use(express.json());
+
+app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
 
 io.on("connection", (socket) => {
   console.log(`Socket connected: ${socket.id}`);
@@ -24,5 +26,7 @@ io.on("connection", (socket) => {
   });
 });
 
-module.exports = app;
-module.exports.handler = serverless(app);
+
+server.listen(PORT, () => {
+  console.log(`Server is up on port ${PORT}`);
+});
